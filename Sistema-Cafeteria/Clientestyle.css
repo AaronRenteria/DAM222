@@ -1,0 +1,30 @@
+body {
+    font-family: Arial;
+    margin: 30px;
+    background-color: #f5f5f5;
+}
+
+h1 {
+    color: brown;
+}
+
+.producto {
+    background-color: white;
+    border: 1px solid gray;
+    padding: 10px;
+    margin: 10px;
+    width: 200px;
+}
+
+.pedido {
+    background-color: white;
+    border: 1px solid gray;
+    padding: 10px;
+    margin: 10px 0;
+}
+
+button {
+    padding: 8px;
+    margin: 5px;
+    cursor: pointer;
+}
