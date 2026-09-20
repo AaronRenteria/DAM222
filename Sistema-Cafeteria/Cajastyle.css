@@ -5,29 +5,32 @@ body {
 }
 
 h1 {
-    color: brown;
-}
-
-h2 {
-    margin-top: 25px;
+    color: darkblue;
 }
 
 button {
     padding: 8px;
-    margin: 5px;
-    background-color: brown;
+    background-color: darkblue;
     color: white;
     border: none;
+    margin: 5px;
 }
 
-#productos,
-#pedido,
 #pedidos {
     background-color: white;
     padding: 10px;
     margin-top: 10px;
 }
 
-.producto {
-    margin-bottom: 10px;
+.pedido {
+    border-bottom: 1px solid gray;
+    padding: 10px;
 }
+
+#total {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+
+

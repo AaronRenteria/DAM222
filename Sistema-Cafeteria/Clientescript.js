@@ -1,106 +1,95 @@
-let pedidoActual = [];
-let total = 0;
+let pedido = [];
 
+let productos = [
+    { nombre: "Cafe", precio: 30 },
+    { nombre: "Capuchino", precio: 45 },
+    { nombre: "Sandwich", precio: 50 }
+];
 
-function agregarProducto(nombre, precio) {
+function mostrarProductos() {
+    let texto = "";
 
-    let producto = {
-        nombre: nombre,
-        precio: precio
-    };
+    productos.forEach(function(producto, i) {
+        texto += `
+            <div class="producto">
+                ${producto.nombre} - $${producto.precio}
+                <button onclick="agregarProducto(${i})">Agregar</button>
+            </div>
+        `;
+    });
 
-    pedidoActual.push(producto);
-
-    total = total + precio;
-
-    mostrarPedidoActual();
+    document.getElementById("productos").innerHTML = texto;
 }
 
-
-function mostrarPedidoActual() {
-
-    let lista = document.getElementById("pedidoActual");
-
-    lista.innerHTML = "";
-
-    for (let i = 0; i < pedidoActual.length; i++) {
-
-        lista.innerHTML +=
-            "<li>" +
-            pedidoActual[i].nombre +
-            " - $" +
-            pedidoActual[i].precio +
-            "</li>";
-    }
-
-    document.getElementById("total").innerHTML = total;
+function agregarProducto(i) {
+    pedido.push(productos[i]);
+    mostrarPedido();
 }
 
+function mostrarPedido() {
+    let texto = "";
+    let total = 0;
+
+    pedido.forEach(function(producto) {
+        texto += `<p>${producto.nombre} - $${producto.precio}</p>`;
+        total += producto.precio;
+    });
+
+    document.getElementById("pedido").innerHTML = texto;
+    document.getElementById("total").innerText = `Total: $${total}`;
+}
 
 function crearPedido() {
-
-    if (pedidoActual.length == 0) {
-        alert("Agrega un producto");
+    if (pedido.length == 0) {
+        alert("Agrega productos");
         return;
     }
 
     let pedidos = JSON.parse(localStorage.getItem("pedidos")) || [];
 
+    let total = 0;
+
+    pedido.forEach(function(producto) {
+        total += producto.precio;
+    });
+
     let nuevoPedido = {
-        id: pedidos.length + 1,
-        productos: pedidoActual,
+        id: Date.now(),
+        productos: pedido,
         total: total,
-        estado: "Pendiente"
+        estado: "Esperando pago"
     };
 
     pedidos.push(nuevoPedido);
 
     localStorage.setItem("pedidos", JSON.stringify(pedidos));
 
-    alert("Pedido creado");
+    console.log(`Pedido creado por $${total}`);
 
-    pedidoActual = [];
-    total = 0;
+    alert("Pedido enviado a caja");
 
-    mostrarPedidoActual();
+    pedido = [];
+
+    mostrarPedido();
     listarPedidos();
 }
 
-function vaciarPedido() {
-
-    pedidoActual = [];
-    total = 0;
-
-    mostrarPedidoActual();
-}
-
-
 function listarPedidos() {
-
     let pedidos = JSON.parse(localStorage.getItem("pedidos")) || [];
+    let texto = "";
 
-    let lista = document.getElementById("listaPedidos");
+    pedidos.forEach(function(pedido) {
+        texto += `
+            <p>
+                Pedido ${pedido.id}
+                - $${pedido.total}
+                - ${pedido.estado}
+            </p>
+        `;
+    });
 
-    lista.innerHTML = "";
-
-    for (let i = 0; i < pedidos.length; i++) {
-
-        let productos = "";
-
-        for (let j = 0; j < pedidos[i].productos.length; j++) {
-
-            productos += pedidos[i].productos[j].nombre + "<br>";
-        }
-
-        lista.innerHTML +=
-            "<div class='pedido'>" +
-            "<h3>Pedido #" + pedidos[i].id + "</h3>" +
-            "<p>" + productos + "</p>" +
-            "<p>Total: $" + pedidos[i].total + "</p>" +
-            "<p>Estado: " + pedidos[i].estado + "</p>" +
-            "</div>";
-    }
+    document.getElementById("pedidos").innerHTML = texto;
 }
 
-
+mostrarProductos();
 listarPedidos();

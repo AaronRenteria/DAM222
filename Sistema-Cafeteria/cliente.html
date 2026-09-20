@@ -7,39 +7,23 @@
 </head>
 <body>
 
-    <h1>Cafetería - Cliente</h1>
+    <h1>Cliente</h1>
 
     <h2>Productos</h2>
+    <div id="productos"></div>
 
-    <div class="producto">
-        <p>Café - $30</p>
-        <button onclick="agregarProducto('Café', 30)">Agregar</button>
-    </div>
+    <h2>Mi pedido</h2>
+    <div id="pedido"></div>
 
-    <div class="producto">
-        <p>Capuchino - $40</p>
-        <button onclick="agregarProducto('Capuchino', 40)">Agregar</button>
-    </div>
+    <p id="total">Total: $0</p>
 
-    <div class="producto">
-        <p>Sandwich - $50</p>
-        <button onclick="agregarProducto('Sandwich', 50)">Agregar</button>
-    </div>
-
-    <h2>Crear pedido</h2>
-
-    <ul id="pedidoActual"></ul>
-
-    <p>Total: $<span id="total">0</span></p>
-
-    <button onclick="crearPedido()">Hacer pedido</button>
-    <button onclick="vaciarPedido()">Eliminar pedido</button>
+    <button onclick="crearPedido()">Crear pedido</button>
 
     <h2>Mis pedidos</h2>
+    <button onclick="listarPedidos()">Listar pedidos</button>
 
-    <div id="listaPedidos"></div>
+    <div id="pedidos"></div>
 
     <script src="Clientescript.js"></script>
-
 </body>
 </html>
