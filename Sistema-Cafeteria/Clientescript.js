@@ -7,10 +7,10 @@ let productos = [
 ];
 
 function mostrarProductos() {
-    let texto = "";
 
-    productos.forEach(function(producto, i) {
-        texto += `
+    // Usamos map() para recorrer productos
+    let productosHTML = productos.map(function(producto, i) {
+        return `
             <div class="producto">
                 ${producto.nombre} - $${producto.precio}
                 <button onclick="agregarProducto(${i})">Agregar</button>
@@ -18,7 +18,7 @@ function mostrarProductos() {
         `;
     });
 
-    document.getElementById("productos").innerHTML = texto;
+    document.getElementById("productos").innerHTML = productosHTML.join("");
 }
 
 function agregarProducto(i) {
@@ -30,8 +30,12 @@ function mostrarPedido() {
     let texto = "";
     let total = 0;
 
+    // Usamos forEach() para recorrer el pedido
     pedido.forEach(function(producto) {
-        texto += `<p>${producto.nombre} - $${producto.precio}</p>`;
+        texto += `
+            <p>${producto.nombre} - $${producto.precio}</p>
+        `;
+
         total += producto.precio;
     });
 
@@ -40,6 +44,7 @@ function mostrarPedido() {
 }
 
 function crearPedido() {
+
     if (pedido.length == 0) {
         alert("Agrega productos");
         return;
@@ -49,6 +54,7 @@ function crearPedido() {
 
     let total = 0;
 
+    // Otro ejemplo de forEach()
     pedido.forEach(function(producto) {
         total += producto.precio;
     });
@@ -78,6 +84,7 @@ function listarPedidos() {
     let pedidos = JSON.parse(localStorage.getItem("pedidos")) || [];
     let texto = "";
 
+    // Usamos forEach()
     pedidos.forEach(function(pedido) {
         texto += `
             <p>
