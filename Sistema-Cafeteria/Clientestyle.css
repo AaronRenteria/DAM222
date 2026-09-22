@@ -1,33 +1,86 @@
 body {
-    font-family: Arial;
-    background-color: #f2f2f2;
-    padding: 20px;
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background-color: #f7f7f7;
 }
 
 h1 {
-    color: brown;
+    text-align: center;
+    color: #b30000;
 }
 
 h2 {
     margin-top: 25px;
+    color: #8b0000;
 }
 
+/* Botones generales */
 button {
-    padding: 8px;
+    padding: 8px 12px;
     margin: 5px;
-    background-color: brown;
-    color: white;
     border: none;
+    border-radius: 6px;
+    background-color: #b30000;
+    color: white;
+    cursor: pointer;
 }
 
-#productos,
-#pedido,
+/* Efecto al pasar el mouse */
+button:hover {
+    background-color: #8b0000;
+}
+
+/* Productos en cuadrícula */
+#productos {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-top: 20px;
+}
+
+/* Cada producto */
+#productos p {
+    background-color: white;
+    padding: 15px;
+    margin: 0;
+    border: 2px solid #b30000;
+    border-radius: 10px;
+    text-align: center;
+}
+
+/* Botón agregar */
+#productos button {
+    display: block;
+    margin: 10px auto 0;
+}
+
+/* Pedido actual */
+#pedido {
+    background-color: white;
+    padding: 15px;
+    margin-top: 10px;
+    border: 2px solid #b30000;
+    border-radius: 10px;
+}
+
+/* Total */
+#total {
+    font-weight: bold;
+    color: #b30000;
+    font-size: 18px;
+}
+
+/* Pedidos creados */
 #pedidos {
     background-color: white;
-    padding: 10px;
+    padding: 15px;
     margin-top: 10px;
+    border: 2px solid #b30000;
+    border-radius: 10px;
 }
 
-.producto {
-    margin-bottom: 10px;
+/* Cada pedido */
+#pedidos p {
+    padding: 8px;
+    border-bottom: 1px solid #ccc;
 }

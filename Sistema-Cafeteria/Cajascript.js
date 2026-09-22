@@ -1,55 +1,111 @@
 let pedidos = [];
-let totalAcumulado = 0;
 
+// Cargar los pedidos guardados
 function cargarPedidos() {
-    pedidos = JSON.parse(localStorage.getItem("pedidos")) || [];
+
+    let datos = localStorage.getItem("pedidos");
+
+    if (datos) {
+        pedidos = JSON.parse(datos);
+    }
 }
 
+
+// Mostrar los pedidos en Caja
 function mostrarPedidos() {
+
     cargarPedidos();
 
     let texto = "";
-    totalAcumulado = 0;
 
+    // Recorremos todos los pedidos
     pedidos.forEach(function(pedido) {
-        let boton = "";
 
-        if (pedido.estado == "Esperando pago") {
-            boton = `<button onclick="cobrarPedido(${pedido.id})">Cobrar</button>`;
-        }
-
-        if (pedido.estado != "Esperando pago") {
-            totalAcumulado += pedido.total;
-        }
+        // Destructuring
+        const { id, estado } = pedido;
 
         texto += `
             <div class="pedido">
-                <p>Pedido ${pedido.id}</p>
+
+                <p>Pedido ${id}</p>
+
                 <p>Total: $${pedido.total}</p>
-                <p>Estado: ${pedido.estado}</p>
-                ${boton}
-            </div>
+
+                <p>Estado: ${estado}</p>
         `;
+
+        // Si todavía no está pagado, aparece el botón
+        if (estado == "Esperando pago") {
+
+            texto += `
+                <button onclick="cobrarPedido(${id})">
+                    Cobrar
+                </button>
+            `;
+        }
+
+        texto += `</div>`;
     });
 
+
+    // Sumar los pedidos cobrados
+    let subtotal = pedidos.reduce(function(suma, pedido) {
+
+        if (pedido.estado != "Esperando pago") {
+            return suma + pedido.total;
+        }
+
+        return suma;
+
+    }, 0);
+
+
+    // Calcular IVA
+    let iva = subtotal * 0.16;
+
+    // Calcular total
+    let total = subtotal + iva;
+
+
+    // Mostrar datos
     document.getElementById("pedidos").innerHTML = texto;
-    document.getElementById("total").innerText = `Total: $${totalAcumulado}`;
+
+    document.getElementById("subtotal").innerText =
+        "Subtotal: $" + subtotal.toFixed(2);
+
+    document.getElementById("iva").innerText =
+        "IVA: $" + iva.toFixed(2);
+
+    document.getElementById("total").innerText =
+        "Total: $" + total.toFixed(2);
 }
 
+
+// Cobrar un pedido
 function cobrarPedido(id) {
+
     cargarPedidos();
 
-    let pedido = pedidos.find(function(pedido) {
-        return pedido.id == id;
+    pedidos.forEach(function(pedido) {
+
+        if (pedido.id == id) {
+            pedido.estado = "En cocina";
+        }
+
     });
 
-    pedido.estado = "En cocina";
 
-    localStorage.setItem("pedidos", JSON.stringify(pedidos));
+    // Guardar el cambio
+    localStorage.setItem(
+        "pedidos",
+        JSON.stringify(pedidos)
+    );
 
     alert("Pedido enviado a cocina");
 
     mostrarPedidos();
 }
 
+
+// Mostrar pedidos al entrar a Caja
 mostrarPedidos();

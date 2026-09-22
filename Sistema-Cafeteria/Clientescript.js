@@ -1,62 +1,105 @@
+// Productos disponibles
+let productos = [
+    { id: 1, nombre: "Cafe", precio: 30, tipo: "Café" },
+    { id: 2, nombre: "Chilaquiles", precio: 75, tipo: "Comida" },
+    { id: 3, nombre: "Pastel de Chocolate", precio: 65, tipo: "Pastel" },
+    { id: 4, nombre: "Coca Cola", precio: 25, tipo: "Bebida" },
+    { id: 5, nombre: "Capuchino", precio: 45, tipo: "Café" },
+    { id: 6, nombre: "Tamales", precio: 35, tipo: "Comida" },
+    { id: 7, nombre: "Cheesecake", precio: 80, tipo: "Pastel" },
+    { id: 8, nombre: "Americano", precio: 25, tipo: "Café" },
+    { id: 9, nombre: "Sandwich", precio: 50, tipo: "Comida" },
+    { id: 10, nombre: "Tarta de Fresa", precio: 70, tipo: "Pastel" },
+    { id: 11, nombre: "Agua Natural", precio: 15, tipo: "Bebida" },
+    { id: 12, nombre: "Latte", precio: 50, tipo: "Café" },
+    { id: 13, nombre: "Huevos con Jamon", precio: 65, tipo: "Comida" },
+    { id: 14, nombre: "Pastel de Tres Leches", precio: 75, tipo: "Pastel" },
+    { id: 15, nombre: "Te de Manzanilla", precio: 30, tipo: "Bebida" },
+    { id: 16, nombre: "Mocha", precio: 55, tipo: "Café" },
+    { id: 17, nombre: "Quesadillas", precio: 45, tipo: "Comida" },
+    { id: 18, nombre: "Pastel de Vainilla", precio: 55, tipo: "Pastel" },
+    { id: 19, nombre: "Jugo de Naranja", precio: 40, tipo: "Bebida" },
+    { id: 20, nombre: "Espresso", precio: 20, tipo: "Café" },
+    { id: 21, nombre: "Molletes", precio: 60, tipo: "Comida" },
+    { id: 22, nombre: "Red Velvet", precio: 95, tipo: "Pastel" },
+    { id: 23, nombre: "Limonada", precio: 30, tipo: "Bebida" },
+    { id: 24, nombre: "Cafe Irlandes", precio: 85, tipo: "Café" },
+    { id: 25, nombre: "Enchiladas", precio: 80, tipo: "Comida" },
+    { id: 26, nombre: "Pastel de Zanahoria", precio: 65, tipo: "Pastel" },
+    { id: 27, nombre: "Fanta", precio: 25, tipo: "Bebida" },
+    { id: 28, nombre: "Chocolate Caliente", precio: 45, tipo: "Bebida" },
+    { id: 29, nombre: "Torta de Chilaquiles", precio: 70, tipo: "Comida" },
+    { id: 30, nombre: "Pastel de Cafe", precio: 90, tipo: "Pastel" }
+];
+// Pedido actual
 let pedido = [];
 
-let productos = [
-    { nombre: "Cafe", precio: 30 },
-    { nombre: "Capuchino", precio: 45 },
-    { nombre: "Sandwich", precio: 50 }
-];
-
+// Mostrar productos
 function mostrarProductos() {
 
-    // Usamos map() para recorrer productos
-    let productosHTML = productos.map(function(producto, i) {
+    let lista = productos.map(function(producto, i) {
+
         return `
-            <div class="producto">
+            <p>
                 ${producto.nombre} - $${producto.precio}
-                <button onclick="agregarProducto(${i})">Agregar</button>
-            </div>
+
+                <button onclick="agregarProducto(${i})">
+                    Agregar
+                </button>
+            </p>
         `;
     });
 
-    document.getElementById("productos").innerHTML = productosHTML.join("");
+    document.getElementById("productos").innerHTML =
+        lista.join("");
 }
 
+
+// Agregar producto
 function agregarProducto(i) {
+
     pedido.push(productos[i]);
+
     mostrarPedido();
 }
 
+
+// Mostrar pedido
 function mostrarPedido() {
+
     let texto = "";
     let total = 0;
 
-    // Usamos forEach() para recorrer el pedido
     pedido.forEach(function(producto) {
+
         texto += `
-            <p>${producto.nombre} - $${producto.precio}</p>
+            <p>
+                ${producto.nombre} - $${producto.precio}
+            </p>
         `;
 
-        total += producto.precio;
+        total = total + producto.precio;
     });
 
     document.getElementById("pedido").innerHTML = texto;
-    document.getElementById("total").innerText = `Total: $${total}`;
+
+    document.getElementById("total").innerHTML =
+        `Total: $${total}`;
 }
 
+
+// Crear pedido
 function crearPedido() {
 
     if (pedido.length == 0) {
-        alert("Agrega productos");
+        alert("Agrega un producto");
         return;
     }
 
-    let pedidos = JSON.parse(localStorage.getItem("pedidos")) || [];
-
     let total = 0;
 
-    // Otro ejemplo de forEach()
     pedido.forEach(function(producto) {
-        total += producto.precio;
+        total = total + producto.precio;
     });
 
     let nuevoPedido = {
@@ -66,11 +109,17 @@ function crearPedido() {
         estado: "Esperando pago"
     };
 
+    let pedidos =
+        JSON.parse(localStorage.getItem("pedidos")) || [];
+
     pedidos.push(nuevoPedido);
 
-    localStorage.setItem("pedidos", JSON.stringify(pedidos));
+    localStorage.setItem(
+        "pedidos",
+        JSON.stringify(pedidos)
+    );
 
-    console.log(`Pedido creado por $${total}`);
+    console.log("Pedido creado");
 
     alert("Pedido enviado a caja");
 
@@ -80,12 +129,17 @@ function crearPedido() {
     listarPedidos();
 }
 
+
+// Listar pedidos
 function listarPedidos() {
-    let pedidos = JSON.parse(localStorage.getItem("pedidos")) || [];
+
+    let pedidos =
+        JSON.parse(localStorage.getItem("pedidos")) || [];
+
     let texto = "";
 
-    // Usamos forEach()
     pedidos.forEach(function(pedido) {
+
         texto += `
             <p>
                 Pedido ${pedido.id}
@@ -98,5 +152,7 @@ function listarPedidos() {
     document.getElementById("pedidos").innerHTML = texto;
 }
 
+
+// Mostrar información al iniciar
 mostrarProductos();
 listarPedidos();
