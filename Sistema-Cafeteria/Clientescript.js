@@ -31,8 +31,10 @@ let productos = [
     { id: 29, nombre: "Torta de Chilaquiles", precio: 70, tipo: "Comida" },
     { id: 30, nombre: "Pastel de Cafe", precio: 90, tipo: "Pastel" }
 ];
+
 // Pedido actual
 let pedido = [];
+
 
 // Mostrar productos
 function mostrarProductos() {
@@ -156,3 +158,9 @@ function listarPedidos() {
 // Mostrar información al iniciar
 mostrarProductos();
 listarPedidos();
+
+
+// setTimeout
+setTimeout(function() {
+    console.log("Sistema de cafetería iniciado");
+}, 2000);
