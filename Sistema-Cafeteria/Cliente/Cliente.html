@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Cliente</title>
+    <link rel="stylesheet" href="Clientestyle.css">
+</head>
+
+<body>
+
+    <h1>Cafetería</h1>
+
+    <h2>Productos disponibles</h2>
+
+    <div class="menu">
+        <button onclick="consultarProductos()">Todos</button>
+        <button onclick="productosBaratos()">Baratos</button>
+        <button onclick="productosCaros()">Caros</button>
+        <button onclick="buscarBebidas()">Bebidas</button>
+        <button onclick="buscarPostres()">Postres</button>
+        <button onclick="mostrarPromociones()">Promociones</button>
+        <button onclick="buscarProducto()">Buscar producto</button>
+    </div>
+
+    <div id="productos"></div>
+
+
+    <h2>Pedido actual</h2>
+
+    <div id="pedido"></div>
+
+    <p id="subtotal">Subtotal: $0</p>
+    <p id="iva">IVA: $0</p>
+    <p id="total">Total: $0</p>
+
+    <button onclick="crearPedido()">Crear pedido</button>
+
+
+    <h2>Lista de pedidos</h2>
+
+    <button onclick="listarPedidos()">Actualizar pedidos</button>
+
+    <div id="pedidos"></div>
+
+
+    <script src="Clientescript.js"></script>
+
+</body>
+
+</html>
