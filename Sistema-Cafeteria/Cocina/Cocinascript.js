@@ -254,3 +254,4 @@ function cancelarPedido(id) {
 
 // Mostrar al iniciar
 mostrarPedidos();
+
