@@ -10,3 +10,4 @@ export const Saludos2=()=>{
         </View>
     )
 }
+
