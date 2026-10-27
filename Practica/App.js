@@ -1,29 +1,31 @@
-
-import { StatusBar } from 'expo-status-bar';
+import { StatusBar } from 'expo-status-bar'; // Barra de estado superior (hora, batería)
 import {
   StyleSheet,
   Text,
   View,
   Button,
-  ActivityIndicator
+  ActivityIndicator // Indicador visual de carga (ruedita giratoria)
 } from 'react-native';
-import { useState } from 'react';
-import Inicio from './Inicio';
-
+import { useState } from 'react'; // Hook para guardar el estado del componente
+import Inicio from './Inicio'; // Importa la pantalla de Inicio
 
 export default function App() {
+  // Estado para controlar la pantalla de carga (true/false)
   const [cargando, setCargando] = useState(false);
+  // Estado para saber qué pantalla mostrar ('principal' o 'inicio')
   const [pantalla, setPantalla] = useState('principal');
 
+  // Función para simular tiempo de carga entre pantallas
   function cambiarPantalla(destino) {
-    setCargando(true);
+    setCargando(true); // Muestra la carga
 
     setTimeout(() => {
-      setPantalla(destino);
-      setCargando(false);
-    }, 1500);
+      setPantalla(destino); // Cambia la pantalla actual
+      setCargando(false); // Oculta la carga
+    }, 1500); // Espera 1.5 segundos
   }
 
+  // Vista 1: Si está cargando, muestra la ruedita giratoria
   if (cargando) {
     return (
       <View style={styles.cargando}>
@@ -33,6 +35,7 @@ export default function App() {
     );
   }
 
+  // Vista 2: Si la pantalla elegida es 'inicio', carga la pantalla Inicio
   if (pantalla === 'inicio') {
     return (
       <Inicio
@@ -41,6 +44,7 @@ export default function App() {
     );
   }
 
+  // Vista 3: Pantalla Principal (por defecto)
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
@@ -55,6 +59,7 @@ export default function App() {
   );
 }
 
+// Estilos visuales de los componentes
 const styles = StyleSheet.create({
   container: {
     flex: 1,
