@@ -9,6 +9,7 @@ import TextInput from './TextInput';
 import FlatList from './FlatList';
 import ImageBackground from './ImageBackground';
 import ActivityIndicator from './ActivityIndicator';
+import  Modal from './Modal';
 
 
 
@@ -19,21 +20,21 @@ export default function MenuScreen() {
 
     switch (screen) {
         case 'tarjetas':
-            return <Tarjetas />
+            return <Tarjetas setScreen={setScreen} />
         case 'safeScreen':
-            return <SafeScreen />
+            return <SafeScreen setScreen={setScreen} />
         case 'pressable':
-            return <Pressable />
+            return <Pressable  setScreen={setScreen}/>
         case 'textInput':
-            return <TextInput />
+            return <TextInput setScreen={setScreen}/>
         case 'flatList':
-            return <FlatList />
+            return <FlatList setScreen={setScreen}/>
         case 'imageBackground':
-            return <ImageBackground />
+            return <ImageBackground setScreen={setScreen}/>
         case 'modal':
-            return <Modal />
+            return <Modal setScreen={setScreen}/>
         case 'activityIndicator':
-            return <ActivityIndicator />
+            return <ActivityIndicator setScreen={setScreen}/>
 
 
 
@@ -65,6 +66,7 @@ export default function MenuScreen() {
             );
     }//switch
 }//funcion
+
 /* 3. Zona de estilos y posicionamiento */
 const styles = StyleSheet.create({
     container: {

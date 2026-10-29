@@ -1,24 +1,27 @@
 /* 1. Zona de importaciones */
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { Perfil } from '../components/Perfil';
 
-
 /* 2. Zona Main */
-export default function Tarjetas() {
+// 1. AQUÍ FALTO RECIBIR { setScreen }
+export default function Tarjetas({ setScreen }) {
     return (
         <View style={styles.container}>
 
+            {/* Contenedor horizontal solo para las tarjetas */}
+            <View style={styles.cardsContainer}>
+                <Perfil style={styles.tarjeta1} nombre="Leo" materia="Movil" carrera="TIID" cuatrimestre="4to" />
+                <Perfil style={styles.tarjeta2} nombre="Carlos" materia="Movil" carrera="TIID" cuatrimestre="4to" />
+                <Perfil style={styles.tarjeta3} nombre="Aaron" materia="Movil" carrera="TIID" cuatrimestre="4to" />
+            </View>
 
-            <Perfil style={styles.tarjeta1} nombre="Leo" materia="Movil" carrera="TIID" cuatrimestre="4to" />
-
-
-            <Perfil style={styles.tarjeta2} nombre="Carlos" materia="Movil" carrera="TIID" cuatrimestre="4to" />
-
-
-            <Perfil style={styles.tarjeta3} nombre="Aaron" materia="Movil" carrera="TIID" cuatrimestre="4to" />
-
-
+            <TouchableOpacity
+                style={styles.backButton}
+                onPress={() => setScreen('menu')}
+            >
+                <Text style={styles.backButtonText}>Regresar al menu</Text>
+            </TouchableOpacity>
 
             <StatusBar style="auto" />
         </View>
@@ -30,17 +33,33 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#fff',
-        flexDirection: 'row',
-        alignItems: 'center',
+        alignItems: 'center',      
+        justifyContent: 'center',
+        gap: 20,
+    },
+    cardsContainer: {
+        flexDirection: 'row',   
         justifyContent: 'space-evenly',
+        width: '100%',
     },
     tarjeta1: {
-        backgroundColor: '#0e4959',
+        backgroundColor: '#89e4fd',
     },
     tarjeta2: {
-        backgroundColor: '#180d59',
+        backgroundColor: '#8aec76',
     },
     tarjeta3: {
-        backgroundColor: '#6e0e0e',
+        backgroundColor: '#ece034',
+    },
+    backButton: {
+        backgroundColor: '#007AFF',
+        paddingVertical: 12,
+        paddingHorizontal: 20,
+        borderRadius: 8,
+    },
+    backButtonText: {
+        color: '#FFFFFF',
+        fontSize: 16,
+        fontWeight: 'bold',
     },
 });

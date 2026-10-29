@@ -1,19 +1,27 @@
 import { StatusBar } from "expo-status-bar";
-import { ScrollView, StyleSheet, View, Text } from "react-native";
+import { ScrollView, StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-export default function SafeScreen() {
+export default function SafeScreen({ setScreen }) {
     return (
         <SafeAreaView style={styles.safeArea} edges={['top', 'bottom', 'left', 'right']}>
             <ScrollView contentContainerStyle={styles.scrollContent}>
                 <Text style={styles.title}>Práctica de equipo</Text>
                 <Text style={styles.subtitle}>Desliza hacia abajo para ver más</Text>
-                
+
                 {[...Array(15)].map((_, index) => (
                     <View key={index} style={styles.box}>
                         <Text style={styles.boxText}>Registro de prueba {index + 1}</Text>
                     </View>
                 ))}
+
+                <TouchableOpacity
+                    style={styles.backButton}
+                    onPress={() => setScreen('menu')}
+                >
+                    <Text style={styles.backButtonText}>Regresar a MenuScreen</Text>
+                </TouchableOpacity>
+
                 <StatusBar style="dark" />
             </ScrollView>
         </SafeAreaView>
@@ -42,6 +50,18 @@ const styles = StyleSheet.create({
         color: '#333',
         marginBottom: 20,
         textAlign: 'center',
+    },
+    backButton: {
+        backgroundColor: '#FFFFFF',
+        paddingVertical: 12,
+        paddingHorizontal: 20,
+        borderRadius: 8,
+        marginBottom: 15,
+    },
+    backButtonText: {
+        color: '#000000',
+        fontSize: 16,
+        fontWeight: 'bold',
     },
     box: {
         backgroundColor: '#FFFFFF',

@@ -1,6 +1,6 @@
 /* 1. Zona de importaciones */
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet } from 'react-native';
 import MenuScreen from './screens/MenuScreen';
 
 /* 2. Zona Main */
