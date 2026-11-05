@@ -50,6 +50,7 @@ export default function PantallaPressable({ setScreen }) {
                     }
                 />
             </Pressable>
+            
 
             <SwitchEjemplo
                 oscuro={oscuro}
