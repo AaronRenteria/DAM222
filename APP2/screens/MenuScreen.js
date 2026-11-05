@@ -7,7 +7,7 @@ import SafeScreen from './SafeScreen';
 import Pressable from './Pressable';
 import TextInput from './TextInput';
 import FlatList from './FlatList';
-import ImageBackground from './ImageBackground';
+import ImageBackground from './ImageBackgroundEjemplo';
 import ActivityIndicator from './ActivityIndicator';
 import  Modal from './Modal';
 
