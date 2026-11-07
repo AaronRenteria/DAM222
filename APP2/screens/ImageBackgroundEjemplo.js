@@ -10,7 +10,7 @@ export default function ImageBackgroundEjemplo(setScreen) {
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowSplash(false);
-    }, 3000);
+    }, 2000);
     return () => clearTimeout(timer);
   }, []);
 
