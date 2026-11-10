@@ -1,0 +1,65 @@
+import React, { useState } from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  SafeAreaView,
+  StatusBar,
+  TextInput,
+  Pressable,
+  Switch,
+  Alert,
+  SectionList,
+  KeyboardAvoidingView,
+  Platform,
+  ActivityIndicator,
+  ImageBackground,
+} from 'react-native';
+
+export default function App() {
+  const [actividades, setActividades] = useState([
+    { id: '1', titulo: 'Entrega de Proyecto Final', completada: false },
+    { id: '2', titulo: 'Lectura Capítulo 4', completada: true },
+  ]);
+  const [nuevaActividad, setNuevaActividad] = useState('');
+  const [cargando, setCargando] = useState(false);
+
+  const agregarActividad = () => {
+    if (nuevaActividad.trim() === '') {
+      Alert.alert('Atención', 'Ingresa una descripción para la actividad.');
+      return;
+    }
+
+    const nueva = {
+      id: Date.now().toString(),
+      titulo: nuevaActividad,
+      completada: false,
+    };
+
+    setActividades([...actividades, nueva]);
+    setNuevaActividad('');
+    Alert.alert('Éxito', 'Actividad agregada correctamente.');
+  };
+
+  const toggleActividad = (id) => {
+    setActividades(
+      actividades.map((item) =>
+        item.id === id ? { ...item, completada: !item.completada } : item
+      )
+    );
+  };
+
+  const completadas = actividades.filter((a) => a.completada).length;
+  const total = actividades.length;
+  const porcentaje = total > 0 ? Math.round((completadas / total) * 100) : 0;
+
+  const secciones = [
+    {
+      titulo: 'Pendientes',
+      data: actividades.filter((a) => !a.completada),
+    },
+    {
+      titulo: 'Completadas',
+      data: actividades.filter((a) => a.completada),
+    },
+  ];
