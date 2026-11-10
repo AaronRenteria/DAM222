@@ -16,6 +16,52 @@ import {
   ImageBackground,
 } from 'react-native';
 
+function Encabezado({ titulo, subtitulo }) {
+  return (
+    <ImageBackground
+      source={{ uri: 'https://picsum.photos/800/300' }}
+      style={styles.headerBackground}
+    >
+      <View style={styles.overlay}>
+        <Text style={styles.tituloHeader}>{titulo}</Text>
+        {subtitulo && <Text style={styles.subtituloHeader}>{subtitulo}</Text>}
+      </View>
+    </ImageBackground>
+  );
+}
+
+function TarjetasActivas() {
+  const tarjetas = [
+    { id: '1', nombre: 'Tarjeta Estudiantil Campus' },
+    { id: '2', nombre: 'Tarjeta de Biblioteca Digital' },
+    { id: '3', nombre: 'Tarjeta de Credenciales Web' },
+  ];
+
+  const mostrarMensaje = (nombre) => {
+    Alert.alert('Tarjeta Seleccionada', `Has presionado: ${nombre}`);
+  };
+
+  return (
+    <View style={styles.tarjetasSeccion}>
+      <Text style={styles.headerSeccion}>Tarjetas Activas</Text>
+      {tarjetas.map((item) => (
+        <View key={item.id} style={styles.card}>
+          <Text style={styles.nombreTarjeta}>{item.nombre}</Text>
+          <Pressable
+            style={({ pressed }) => [
+              styles.botonTarjeta,
+              pressed && { opacity: 0.7 },
+            ]}
+            onPress={() => mostrarMensaje(item.nombre)}
+          >
+            <Text style={styles.textoBotonTarjeta}>Ver detalles</Text>
+          </Pressable>
+        </View>
+      ))}
+    </View>
+  );
+}
+
 export default function App() {
   const [actividades, setActividades] = useState([
     { id: '1', titulo: 'Entrega de Proyecto Final', completada: false },
@@ -55,11 +101,99 @@ export default function App() {
 
   const secciones = [
     {
-      titulo: 'Pendientes',
+      titulo: 'Actividades Pendientes',
       data: actividades.filter((a) => !a.completada),
     },
     {
-      titulo: 'Completadas',
+      titulo: 'Actividades Completadas',
       data: actividades.filter((a) => a.completada),
     },
   ];
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <StatusBar barStyle="light-content" />
+
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{ flex: 1 }}
+      >
+        <Encabezado
+          titulo="Repaso Examen 2do Parcial"
+          subtitulo={`Progreso: ${completadas} de ${total} (${porcentaje}%)`}
+        />
+
+        {cargando ? (
+          <ActivityIndicator size="large" color="#007AFF" style={{ flex: 1 }} />
+        ) : (
+          <SectionList
+            sections={secciones}
+            keyExtractor={(item) => item.id}
+            contentContainerStyle={styles.listaContainer}
+            ListHeaderComponent={
+              <>
+                <View style={styles.formContainer}>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Escribe una nueva actividad..."
+                    placeholderTextColor="#8E8E93"
+                    value={nuevaActividad}
+                    onChangeText={setNuevaActividad}
+                  />
+                  <Pressable
+                    style={({ pressed }) => [
+                      styles.botonAgregar,
+                      pressed && { opacity: 0.7 },
+                    ]}
+                    onPress={agregarActividad}
+                  >
+                    <Text style={styles.textoBoton}>Agregar</Text>
+                  </Pressable>
+                </View>
+
+                <TarjetasActivas />
+              </>
+            }
+            renderSectionHeader={({ section: { titulo } }) => (
+              <Text style={styles.headerSeccion}>{titulo}</Text>
+            )}
+            renderItem={({ item }) => (
+              <Pressable
+                style={({ pressed }) => [
+                  styles.card,
+                  item.completada && styles.cardCompletada,
+                  pressed && { opacity: 0.8 },
+                ]}
+                onPress={() => toggleActividad(item.id)}
+              >
+                <Text
+                  style={[
+                    styles.textoActividad,
+                    item.completada && styles.textoCompletado,
+                  ]}
+                >
+                  {item.titulo}
+                </Text>
+
+                <Switch
+                  value={item.completada}
+                  onValueChange={() => toggleActividad(item.id)}
+                  trackColor={{ false: '#D1D1D6', true: '#34C759' }}
+                />
+              </Pressable>
+            )}
+          />
+        )}
+      </KeyboardAvoidingView>
+    </SafeAreaView>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: { flex: 1, backgroundColor: '#F2F2F7' },
+  headerBackground: { height: 140, justifyContent: 'flex-end' },
+  overlay: {
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    padding: 16,
+  },
+  tituloHeader: { fontSize: 22, fontWeight: 'bold', color: '#FFF
