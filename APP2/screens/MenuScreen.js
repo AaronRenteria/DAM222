@@ -9,7 +9,7 @@ import TextInput from './TextInput';
 import FlatList from './FlatList';
 import ImageBackground from './ImageBackgroundEjemplo';
 import ActivityIndicator from './ActivityIndicator';
-import  Modal from './Modal';
+import Modal from './ModalScreen';
 
 
 

@@ -8,7 +8,7 @@ import {
   FlatList,
   Alert,
   ActivityIndicator,
-  ImageBackground,
+  Image,
   SafeAreaView,
   StatusBar
 } from 'react-native';
@@ -69,7 +69,7 @@ export default function App() {
   }
 
   return (
-    <ImageBackground
+    <Image
       source={{ uri: 'https://picsum.photos/800/1200' }}
       style={styles.backgroundImage}
       resizeMode="cover"
@@ -134,7 +134,7 @@ export default function App() {
           contentContainerStyle={styles.listContent}
         />
       </SafeAreaView>
-    </ImageBackground>
+    </Image>
   );
 }
 
