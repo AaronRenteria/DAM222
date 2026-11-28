@@ -1,17 +1,30 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import { SafeAreaView, View, Text, FlatList, StyleSheet, Pressable, } from 'react-native';
-import { router } from 'expo-router';
+import { router, useFocusEffect } from 'expo-router';
+import { obtenerUsuarios } from '../services/usuariosService';
 
 export default function ConsultaUsuariosScreen() {
 
-  const usuarios = [
-    { id: '1', nombre: 'Isay Guerra', edad: 22 },
-    { id: '2', nombre: 'Ana López', edad: 19 },
-  ];
+  const [usuarios, setUsuarios] = useState([]);
+  const [error, setError] = useState(null);
+
+  useFocusEffect(
+    useCallback(() => {
+      const cargar = async () => {
+        try {
+          setUsuarios(await obtenerUsuarios());
+          setError(null);
+        } catch (e) {
+          setError(e.message);
+        }
+      };
+      cargar();
+    }, [])
+  );
 
   const renderTarjeta = ({ item }) => (
     <Pressable
-      onPress={() => router.push({pathname:'/detalle',params:{id:item.id,nombre:item.nombre,edad:item.edad}})}
+      onPress={() => router.push({pathname:'/detalle',params:{id:item.id}})}
     >
       <View style={styles.card}>
         <Text style={styles.nombre}>{item.nombre}</Text>
@@ -32,10 +45,15 @@ export default function ConsultaUsuariosScreen() {
 
       <FlatList
         data={usuarios}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => String(item.id)}
         renderItem={renderTarjeta}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 20 }}
+        ListEmptyComponent={
+          <Text style={styles.vacio}>
+            {error ?? 'No hay usuarios registrados.'}
+          </Text>
+        }
       />
 
     </SafeAreaView>
@@ -90,6 +108,13 @@ const styles = StyleSheet.create({
   info: {
     fontSize: 16,
     color: '#4B5563',
+  },
+
+  vacio: {
+    textAlign: 'center',
+    fontSize: 16,
+    color: '#6B7280',
+    marginTop: 30,
   },
 
 });

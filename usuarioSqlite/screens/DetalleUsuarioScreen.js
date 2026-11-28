@@ -1,21 +1,63 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { SafeAreaView, View, Text, StyleSheet, Pressable, Modal, } from 'react-native';
-import { router, useLocalSearchParams } from 'expo-router';
+import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
+import { eliminarUsuario, obtenerUsuarioPorId } from '../services/usuariosService';
 
 export default function DetalleUsuarioScreen() {
 
-    const {id,nombre,edad}=useLocalSearchParams();
-    const actualizarUsuario=()=>{
-        router.push({pathname:'/actualiza',params:{id:id,nombre:nombre,edad:edad}});
-    };
+    const { id } = useLocalSearchParams();
+    const [usuario, setUsuario] = useState(null);
+    const [cargando, setCargando] = useState(true);
+    const [mensaje, setMensaje] = useState(null);
     // Estado para mostrar u ocultar el modal
     const [modalVisible, setModalVisible] = useState(false);
 
-    // Confirmar la eliminación
-    const confirmarEliminacion = () => {
-        console.log('Eliminar usuario:', id);
-        setModalVisible(false);
+    useFocusEffect(
+        useCallback(() => {
+            const cargar = async () => {
+                setCargando(true);
+                try {
+                    setUsuario(await obtenerUsuarioPorId(id));
+                } catch (e) {
+                    setMensaje(e.message);
+                } finally {
+                    setCargando(false);
+                }
+            };
+            cargar();
+        }, [id])
+    );
+
+    const actualizarUsuario=()=>{
+        router.push({pathname:'/actualiza',params:{id:id}});
     };
+
+    // Confirmar la eliminación
+    const confirmarEliminacion = async () => {
+        setModalVisible(false);
+        try {
+            const resultado = await eliminarUsuario(id);
+            if (resultado.ok) {
+                router.replace('/consulta');
+            } else {
+                setMensaje(resultado.mensaje);
+            }
+        } catch (e) {
+            setMensaje(e.message);
+        }
+    };
+
+    if (cargando || !usuario) {
+        return (
+            <SafeAreaView style={styles.container}>
+                <Text style={styles.titulo}>
+                    {cargando ? 'Cargando...' : (mensaje ?? 'Usuario no encontrado')}
+                </Text>
+            </SafeAreaView>
+        );
+    }
+
+    const { nombre, edad } = usuario;
 
     return (
         <SafeAreaView style={styles.container}>
@@ -76,6 +118,12 @@ export default function DetalleUsuarioScreen() {
                     </Pressable>
 
                 </View>
+
+                {mensaje && (
+                    <Text style={styles.mensajeError}>
+                        {mensaje}
+                    </Text>
+                )}
 
             </View>
 
@@ -223,6 +271,14 @@ const styles = StyleSheet.create({
     textoBotonEliminar: {
         color: '#FFFFFF',
         fontSize: 14,
+        fontWeight: 'bold',
+    },
+
+
+    mensajeError: {
+        marginTop: 15,
+        textAlign: 'center',
+        color: '#DC2626',
         fontWeight: 'bold',
     },
 

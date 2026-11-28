@@ -1,11 +1,32 @@
 import React, { useState } from 'react';
 import {View,SafeAreaView,Text,TextInput,Pressable,StyleSheet,} from 'react-native';
+import { agregarUsuario } from '../services/usuariosService';
+import KeyboardDismissView from '../components/KeyboardDismissView';
 
-export default function App() {
+export default function AltaUsuariosScreen() {
   const [nombre, setNombre] = useState('');
   const [edad, setEdad] = useState('');
+  const [mensaje, setMensaje] = useState(null);
+  const [guardando, setGuardando] = useState(false);
+
+  const guardar = async () => {
+    setGuardando(true);
+    try {
+      const resultado = await agregarUsuario(nombre, edad);
+      setMensaje({ texto: resultado.mensaje, error: !resultado.ok });
+      if (resultado.ok) {
+        setNombre('');
+        setEdad('');
+      }
+    } catch (error) {
+      setMensaje({ texto: error.message, error: true });
+    } finally {
+      setGuardando(false);
+    }
+  };
 
   return (
+    <KeyboardDismissView>
     <SafeAreaView style={styles.container}>
 
       <View style={styles.card}>
@@ -29,15 +50,26 @@ export default function App() {
           onChangeText={setEdad}
         />
 
-        <Pressable style={styles.boton}>
+        <Pressable
+          style={[styles.boton, guardando && { opacity: 0.6 }]}
+          onPress={guardar}
+          disabled={guardando}
+        >
           <Text style={styles.textoBoton}>
-            Agregar Usuario
+            {guardando ? 'Guardando...' : 'Agregar Usuario'}
           </Text>
         </Pressable>
+
+        {mensaje && (
+          <Text style={[styles.mensaje, mensaje.error ? styles.mensajeError : styles.mensajeOk]}>
+            {mensaje.texto}
+          </Text>
+        )}
 
       </View>
 
     </SafeAreaView>
+    </KeyboardDismissView>
   );
 }
 
@@ -97,6 +129,21 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 17,
     fontWeight: 'bold',
+  },
+
+  mensaje: {
+    marginTop: 18,
+    textAlign: 'center',
+    fontSize: 15,
+    fontWeight: 'bold',
+  },
+
+  mensajeOk: {
+    color: '#15803D',
+  },
+
+  mensajeError: {
+    color: '#DC2626',
   },
 
 });
